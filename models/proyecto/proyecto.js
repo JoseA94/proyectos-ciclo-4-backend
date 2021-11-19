@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
-// import { Enum_EstadoProyecto, Enum_FaseProyecto, Enum_TipoObjetivo } from '../enums/enums';
-// import { ObjectiveModel } from '../objective';
+// import { Enum_EstadoProyecto, Enum_FaseProyecto, Enum_TipoObjetivo } from '../enums/enums.js';
+import { ObjectiveModel } from '../objective.js';
 import { UserModel } from '../usuario/usuario.js';
+const { Schema, model } = mongoose;
 
 // interface Proyecto {
 //   nombre: string;
@@ -64,12 +64,18 @@ const projectSchema = new Schema(
   },
   {
     toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
-    toObject: { virtuals: true },
+    toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals
   }
 );
 
 projectSchema.virtual('avances', {
   ref: 'Avance',
+  localField: '_id',
+  foreignField: 'proyecto',
+});
+
+projectSchema.virtual('inscripciones', {
+  ref: 'Inscripcion',
   localField: '_id',
   foreignField: 'proyecto',
 });
